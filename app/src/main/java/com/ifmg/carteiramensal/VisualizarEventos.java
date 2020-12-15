@@ -11,6 +11,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import ferramentas.EventosDB;
+import modelo.Evento;
+
 public class VisualizarEventos extends AppCompatActivity {
 
     private TextView tituloTxt;
@@ -18,6 +23,10 @@ public class VisualizarEventos extends AppCompatActivity {
     private TextView totalTxt;
     private Button novoBtn;
     private Button cancelarBtn;
+
+    private ArrayList<Evento> eventos;
+    private itemListaEvento adapter;
+
 
     //0peração = 0 indica entrada e operação = 1indica saída
     private int operacao = -1;
@@ -43,6 +52,8 @@ public class VisualizarEventos extends AppCompatActivity {
         cadastrarEventos();
         cadastrarEventos();
 
+        carregaEventosLista();
+
     }
 
     private void cadastrarEventos(){
@@ -55,15 +66,23 @@ public class VisualizarEventos extends AppCompatActivity {
                     Intent trocaAct = new Intent(VisualizarEventos.this, CadastroEdicaoEvento.class);
                     if(operacao == 0){
                         trocaAct.putExtra("acao",0);
+                        startActivityForResult(trocaAct, 0);
                     }else{
                         trocaAct.putExtra("acao", 1);
+                        startActivityForResult(trocaAct, 0);
                     }
 
-                    startActivity(trocaAct);
+
                 }
 
             }
         });
+         cancelarBtn.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 finish();
+             }
+         });
 
     }
 
@@ -84,7 +103,25 @@ public class VisualizarEventos extends AppCompatActivity {
 
     }
 
+    private void carregaEventosLista(){
+        EventosDB db = new EventosDB(VisualizarEventos.this);
+        eventos = db.buscaEvento(operacao, MainActivity.dataApp);
 
+        adapter = new itemListaEvento(getApplicationContext(), eventos);
+        listaEventos.setAdapter(adapter);
+
+        double total = 0.0;
+        for(int i = 0; i < eventos.size(); i++ ){
+            total += eventos.get(i).getValor();
+        }
+        totalTxt.setText(String.format("%2f", total));
+    }
+
+    protected void  onActivityResult(int codigoRequest, int codigoResultado, Intent data) {
+        super.onActivityResult(codigoRequest, codigoResultado, data);
+
+        carregaEventosLista();
+    }
 
 
 }

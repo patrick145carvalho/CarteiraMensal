@@ -6,18 +6,22 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import ferramentas.EventosDB;
 import modelo.Evento;
@@ -35,6 +39,7 @@ public class CadastroEdicaoEvento extends AppCompatActivity {
     private Button salvarBtn;
     private Button cancelarBtn;
     private Calendar calendarioTemp;
+    private Spinner mesesRepeteSpi;
 
     //0 - cadastro de entrada, 1- cadastro de saída, 2- edição de entrada, 3- edição de saída
     private int acao = -1;
@@ -54,13 +59,26 @@ public class CadastroEdicaoEvento extends AppCompatActivity {
         fotoBtn = (Button) findViewById(R.id.fotoBtn);
         salvarBtn = (Button) findViewById(R.id.salvarCadastroBtn);
         cancelarBtn = (Button) findViewById(R.id.cancelarCadastroBtn);
+        mesesRepeteSpi = (Spinner) findViewById(R.id.mesesSpiner);
 
         Intent intencao = getIntent();
         acao = intencao.getIntExtra("acao", -1);
 
         ajustaPorAcao();
         cadastraEventos();
+        confSpinners();
 
+    }
+    private void confSpinners(){
+        List<String> meses = new ArrayList<>();
+        //vamos permitir nessa versão a repetição de apenas 24 meses de um evento
+        for(int i = 1; i<= 24; i++){
+            meses.add(i+"");
+        }
+        ArrayAdapter<String> listaAdapter = new ArrayAdapter<String>(this,
+                R.layout.support_simple_spinner_dropdown_item, meses);
+        mesesRepeteSpi.setAdapter(listaAdapter);
+        mesesRepeteSpi.setEnabled(false);
     }
 
     private void cadastraEventos(){
@@ -85,6 +103,26 @@ public class CadastroEdicaoEvento extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 cadastrarNovoEvento();
+            }
+        });
+        //Tratando a repetição do evento
+
+        repeteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(repeteBtn.isChecked()){
+                    mesesRepeteSpi.setEnabled(true);
+                }else{
+                    mesesRepeteSpi.setEnabled(false);
+                }
+            }
+        });
+
+        cancelarBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Termina a execuçao de uma Activity e retorna a anterior
+                finish();
             }
         });
     }
@@ -130,12 +168,12 @@ public class CadastroEdicaoEvento extends AppCompatActivity {
             valor *= -1;
         }
 
-        SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+        //SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+        //String dataStr = dataTxt.getText().toString();
 
-        String dataStr = dataTxt.getText().toString();
-        try {
+        //try {
 
-            Date diaEvento = formatador.parse(dataStr);
+            Date diaEvento = calendarioTemp.getTime();
             //um novo calendario para calcular a data limite (repetição)
             Calendar dataLimite = Calendar.getInstance();
             dataLimite.setTime(calendarioTemp.getTime());
@@ -143,6 +181,8 @@ public class CadastroEdicaoEvento extends AppCompatActivity {
             //verificando se esse evento irá repetir por alguns meses
             if(repeteBtn.isChecked()){
             //por enquanto estamos considerando apenas um mes
+                String mesStr = (String)mesesRepeteSpi.getSelectedItem();
+                dataLimite.add(Calendar.MONTH, Integer.parseInt(mesStr));
             }
             //setando para o ultimo dia do mes limite
             dataLimite.set(Calendar.DAY_OF_MONTH, dataLimite.getActualMaximum(Calendar.DAY_OF_MONTH));
@@ -157,9 +197,9 @@ public class CadastroEdicaoEvento extends AppCompatActivity {
 
             finish();
 
-        }catch (ParseException ex){
+        /*}catch (ParseException ex){
             System.err.println("erro no formato da data....");
-        }
+        }*/
 
     }
 

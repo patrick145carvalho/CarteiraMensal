@@ -33,11 +33,11 @@
             <!-- botão de cadastro de entrada-->
             <ImageButton
                 android:id="@+id/entradaBtn"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@mipmap/soma"
                 android:layout_gravity="center"
-                android:layout_marginRight="20dp"/>
+                android:layout_marginRight="10dp"/>
 
             <!--bloco lógico para organizar os TextView-->
             <LinearLayout
@@ -56,14 +56,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Entradas: R$"
-                        android:textSize="21dp"/>
+                        android:textSize="17dp"/>
 
                     <TextView
                         android:id="@+id/entradaTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0,00"
-                        android:textSize="21sp"
+                        android:textSize="17sp"
                         android:layout_marginLeft="4dp"/>
 
                 </LinearLayout>
@@ -80,14 +80,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="Saídas: R$"
-                        android:textSize="21dp" />
+                        android:textSize="17dp" />
 
                     <TextView
                         android:id="@+id/saidaTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0,00"
-                        android:textSize="21sp"
+                        android:textSize="17sp"
                         android:layout_marginLeft="4dp"/>/>
                 </LinearLayout>
 
@@ -102,14 +102,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="saldo: R$"
-                        android:textSize="21dp"/>
+                        android:textSize="17dp"/>
 
                     <TextView
                         android:id="@+id/saldoTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0,00"
-                        android:textSize="21sp"
+                        android:textSize="17sp"
                         android:layout_marginLeft="4dp"/>/>
 
                 </LinearLayout>
@@ -118,11 +118,11 @@
             <!-- botão de cadastro de saída-->
             <ImageButton
                 android:id="@+id/saidaBtn"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@mipmap/sub"
                 android:layout_gravity="center"
-                android:layout_marginLeft="20dp"/>
+                android:layout_marginLeft="10dp"/>
 
         </LinearLayout>
         <LinearLayout

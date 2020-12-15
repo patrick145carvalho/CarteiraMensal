@@ -18,10 +18,11 @@
             android:layout_height="wrap_content"
             android:text="Título"
             android:layout_gravity="center"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
             android:textSize="32sp"/>
 
+        <!-- Representando o total dos eventos da lista-->
         <ListView
             android:id="@+id/listaEventos"
             android:layout_width="match_parent"
@@ -29,9 +30,10 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginBottom="15dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:background="@drawable/bordalista"/>
 
-        <!-- Representando o total dos eventos da lista-->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
